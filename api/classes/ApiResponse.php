@@ -13,5 +13,6 @@ class ApiResponse
         ];
 
         echo json_encode($response);
+        exit;
     }
 }
