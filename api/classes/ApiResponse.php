@@ -2,7 +2,6 @@
 
 class ApiResponse
 {
-
     public static function send(int $code, bool $success, string $message, $data = null)
     {
         http_response_code($code);

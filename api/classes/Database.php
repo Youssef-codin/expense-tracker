@@ -2,10 +2,10 @@
 
 class Database
 {
-    private $host = 'localhost';
+    private $host = '127.0.0.1';
     private $db_name = 'expense_tracker';
-    private $username = 'root';
-    private $password = '';
+    private $username = 'expense_app';
+    private $password = 'password123';
 
     private static $instance = null; // The single instance
     private $conn;
