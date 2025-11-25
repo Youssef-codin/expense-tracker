@@ -18,8 +18,6 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// 4. Destroy the file on the server
 session_destroy();
 
-// 5. Tell frontend it's done
 ApiResponse::send(200, true, "Logged out successfully");
