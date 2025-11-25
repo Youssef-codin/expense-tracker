@@ -5,7 +5,7 @@ require_once '../classes/ApiResponse.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    ApiResponse::send(400, false, "Please login");
+    ApiResponse::send(401, false, "Please login");
     exit;
 }
 
