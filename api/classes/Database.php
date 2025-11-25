@@ -33,6 +33,7 @@ class Database
         if (self::$instance === null) {
             self::$instance = new Database();
         }
+
         return self::$instance->conn;
     }
 
