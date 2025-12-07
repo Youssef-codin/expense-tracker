@@ -6,6 +6,7 @@
     <title>Finance Dashboard - Dashboard (Tailwind)</title>
     <script> tailwind.config = { darkMode: 'class' } </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
@@ -23,24 +24,97 @@
             <nav class="space-y-1">
                 <a href="transactions.html" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Transactions</a>
                 <a href="dashboard.html" class="block w-full text-left px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-700/20 dark:text-indigo-200 font-medium">Dashboard</a>
-                <a href="reports.html" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Reports</a>
+                
                 <a href="settings.html" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+
+                <a href="#" onclick="logout()" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700 text-red-600 dark:text-red-400 font-medium mt-4 border-t pt-2 border-gray-100 dark:border-gray-700">Logout</a>
             </nav>
 
             <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
                 <div>Logged in as</div>
-                <div class="font-medium mt-1">Ayman</div>
-                <button onclick="logout()" class="mt-3 px-3 py-1 bg-red-600 text-white rounded-lg text-xs">Logout</button>
+                <div id="loggedInUsername" class="font-medium mt-1">Ayman</div>
             </div>
         </aside>
 
-        <main class="flex-1 p-8">
-            <section id="dashboard" class="space-y-6 fade-up">
-                <h2 class="text-xl font-semibold">Dashboard</h2>
-                <p class="text-gray-500 dark:text-gray-400">Overview & charts (coming soon)</p>
+        <main class="flex-1 p-8 space-y-10">
+
+            <!-- Summary Screen -->
+            <section class="space-y-6 fade-up">
+                <h2 class="text-xl font-semibold">Summary</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                        <h3 class="text-gray-500">Total Income</h3>
+                        <p id="totalIncome" class="text-2xl font-bold text-green-600">$0</p>
+                    </div>
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                        <h3 class="text-gray-500">Total Expenses</h3>
+                        <p id="totalExpenses" class="text-2xl font-bold text-red-600">$0</p>
+                    </div>
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                        <h3 class="text-gray-500">Balance</h3>
+                        <p id="balance" class="text-2xl font-bold text-indigo-600">$0</p>
+                    </div>
+                </div>
             </section>
+
+            <!-- Charts Screen -->
+            <section class="space-y-6 fade-up">
+                <h2 class="text-xl font-semibold">Charts</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                    <!-- Pie Chart -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+                        <h3 class="text-lg mb-3 font-medium">Income vs Expenses</h3>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+                        <h3 class="text-lg mb-3 font-medium">Monthly Overview</h3>
+                        <canvas id="barChart"></canvas>
+                    </div>
+
+                </div>
+            </section>
+
         </main>
     </div>
-    <script src="script.js"></script>
+
+<script>
+// Example static data (replace later dynamically)
+const totalIncome = 1200;
+const totalExpenses = 800;
+
+document.getElementById('totalIncome').textContent = '$' + totalIncome;
+document.getElementById('totalExpenses').textContent = '$' + totalExpenses;
+document.getElementById('balance').textContent = '$' + (totalIncome - totalExpenses);
+
+// Pie Chart
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: ['Income', 'Expenses'],
+        datasets: [{
+            data: [totalIncome, totalExpenses]
+        }]
+    }
+});
+
+// Bar Chart
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        datasets: [{
+            label: 'Income',
+            data: [300, 250, 200, 220, 230]
+        }, {
+            label: 'Expenses',
+            data: [150, 180, 160, 170, 200]
+        }]
+    }
+});
+</script>
+
 </body>
 </html>
