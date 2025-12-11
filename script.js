@@ -34,6 +34,15 @@ function checkAuth() {
               user) {
         window.location.href = 'transactions.html';
     }
+
+    // عرض اسم المستخدم في القائمة الجانبية (للتجميل)
+    if(user) {
+        const currentUser = JSON.parse(user);
+        const usernameEl = document.getElementById('loggedInUsername');
+        if (usernameEl) {
+            usernameEl.textContent = currentUser.username;
+        }
+    }
 }
 
 checkAuth(); // شغل التحقق عند تحميل أي صفحة
@@ -203,4 +212,68 @@ if(saveLocalCheckbox) {
     
     if(lightBtn) lightBtn.addEventListener('click', () => setTheme('light'));
     if(darkBtn) darkBtn.addEventListener('click', () => setTheme('dark'));
+}
+
+
+
+// ==================== Dashboard Logic ====================
+if (window.location.pathname.includes("dashboard.html")) {
+
+    const sumIncomeEl = document.getElementById("sumIncome");
+    const sumExpenseEl = document.getElementById("sumExpense");
+    const sumBalanceEl = document.getElementById("sumBalance");
+
+    const pieCtx = document.getElementById("pieChart");
+    const barCtx = document.getElementById("barChart");
+
+    // Load transactions
+    let transactions = JSON.parse(localStorage.getItem("transactions") || "[]");
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    // For Bar Chart
+    let monthlyIncome = new Array(12).fill(0);
+    let monthlyExpense = new Array(12).fill(0);
+
+    transactions.forEach(t => {
+        const month = new Date(t.date).getMonth();
+
+        if (t.type === "Income") {
+            totalIncome += t.amount;
+            monthlyIncome[month] += t.amount;
+        } else {
+            totalExpense += t.amount;
+            monthlyExpense[month] += t.amount;
+        }
+    });
+
+    // Display summary
+    sumIncomeEl.textContent = `${totalIncome.toFixed(2)} EGP`;
+    sumExpenseEl.textContent = `${totalExpense.toFixed(2)} EGP`;
+    sumBalanceEl.textContent = `${(totalIncome - totalExpense).toFixed(2)} EGP`;
+
+    // Draw Pie Chart
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ["Income", "Expenses"],
+            datasets: [{
+                data: [totalIncome, totalExpense],
+            }]
+        }
+    });
+
+    // Draw Bar Chart
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            datasets: [
+                { label: "Income", data: monthlyIncome },
+                { label: "Expenses", data: monthlyExpense }
+            ]
+        }
+    });
+
 }
