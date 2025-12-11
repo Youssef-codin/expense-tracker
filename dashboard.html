@@ -1,120 +1,223 @@
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Finance Dashboard - Dashboard (Tailwind)</title>
-    <script> tailwind.config = { darkMode: 'class' } </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker App</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body.dark { background-color: #121212; color: #eee; }
+button { cursor: pointer; }
+</style>
 </head>
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-    <div class="min-h-screen flex">
 
-        <aside class="w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-8">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">ET</div>
-                <div>
-                    <div class="text-lg font-semibold">Expense Tracker App</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400">Personal Finance</div>
+<div class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-8">
+        <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">ET</div>
+            <div>
+                <div class="text-lg font-semibold">Expense Tracker App</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">Personal Finance</div>
+            </div>
+        </div>
+
+        <nav class="space-y-1">
+            <a href="transactions.html" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Transactions</a>
+            <a href="#" onclick="showPage('dashboard')" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
+            <a href="#" onclick="showPage('settings')" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+            <a href="#" onclick="logout()" class="block px-3 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700 text-red-600 dark:text-red-400 font-medium mt-4 border-t pt-2 border-gray-100 dark:border-gray-700">Logout</a>
+        </nav>
+
+        <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+            <div>Logged in as</div>
+            <div id="loggedInUsername" class="font-medium mt-1"></div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8 space-y-10">
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-4" style="display:none;">
+            <h2 class="text-xl font-semibold">Login</h2>
+            <input id="loginUsername" placeholder="Username" class="border p-2 w-full">
+            <input id="loginPassword" type="password" placeholder="Password" class="border p-2 w-full">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Login</button>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="regForm" class="space-y-4" style="display:none;">
+            <h2 class="text-xl font-semibold">Register</h2>
+            <input id="regUsername" placeholder="Username" class="border p-2 w-full">
+            <input id="regPassword" type="password" placeholder="Password" class="border p-2 w-full">
+            <input id="regEmail" placeholder="Email" class="border p-2 w-full">
+            <input id="regAge" placeholder="Age" class="border p-2 w-full">
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Register</button>
+        </form>
+
+        <!-- Dashboard Page -->
+        <section id="dashboardPage" style="display:none;">
+            <h2 class="text-xl font-semibold">Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                    <h3 class="text-gray-500">Total Income</h3>
+                    <p id="totalIncome" class="text-2xl font-bold text-green-600">$0</p>
+                </div>
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                    <h3 class="text-gray-500">Total Expenses</h3>
+                    <p id="totalExpenses" class="text-2xl font-bold text-red-600">$0</p>
+                </div>
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
+                    <h3 class="text-gray-500">Balance</h3>
+                    <p id="summaryBalance" class="text-2xl font-bold text-indigo-600">$0</p>
                 </div>
             </div>
 
-            <nav class="space-y-1">
-                <a href="transactions.html" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Transactions</a>
-                <a href="dashboard.html" class="block w-full text-left px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-700/20 dark:text-indigo-200 font-medium">Dashboard</a>
-                
-                <a href="settings.html" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
-
-                <a href="#" onclick="logout()" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700 text-red-600 dark:text-red-400 font-medium mt-4 border-t pt-2 border-gray-100 dark:border-gray-700">Logout</a>
-            </nav>
-
-            <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
-                <div>Logged in as</div>
-                <div id="loggedInUsername" class="font-medium mt-1">Ayman</div>
+            <h2 class="text-xl font-semibold mb-4">Charts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+                    <h3 class="text-lg font-medium mb-2">Income vs Expenses</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+                    <h3 class="text-lg font-medium mb-2">Monthly Overview</h3>
+                    <canvas id="barChart"></canvas>
+                </div>
             </div>
-        </aside>
+        </section>
 
-        <main class="flex-1 p-8 space-y-10">
+        <!-- Settings Page -->
+        <section id="settingsPage" style="display:none;">
+            <h2 class="text-xl font-semibold mb-4">Settings</h2>
+            <label class="flex items-center gap-2">
+                <input type="checkbox" id="saveLocal"> Save Local
+            </label>
+            <div class="mt-4">
+                <button id="lightTheme" class="bg-gray-300 px-3 py-2 rounded mr-2">Light</button>
+                <button id="darkTheme" class="bg-gray-700 text-white px-3 py-2 rounded">Dark</button>
+            </div>
+        </section>
 
-            <!-- Summary Screen -->
-            <section class="space-y-6 fade-up">
-                <h2 class="text-xl font-semibold">Summary</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
-                        <h3 class="text-gray-500">Total Income</h3>
-                        <p id="totalIncome" class="text-2xl font-bold text-green-600">$0</p>
-                    </div>
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
-                        <h3 class="text-gray-500">Total Expenses</h3>
-                        <p id="totalExpenses" class="text-2xl font-bold text-red-600">$0</p>
-                    </div>
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow text-center">
-                        <h3 class="text-gray-500">Balance</h3>
-                        <p id="balance" class="text-2xl font-bold text-indigo-600">$0</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Charts Screen -->
-            <section class="space-y-6 fade-up">
-                <h2 class="text-xl font-semibold">Charts</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-
-                    <!-- Pie Chart -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
-                        <h3 class="text-lg mb-3 font-medium">Income vs Expenses</h3>
-                        <canvas id="pieChart"></canvas>
-                    </div>
-
-                    <!-- Bar Chart -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
-                        <h3 class="text-lg mb-3 font-medium">Monthly Overview</h3>
-                        <canvas id="barChart"></canvas>
-                    </div>
-
-                </div>
-            </section>
-
-        </main>
-    </div>
+    </main>
+</div>
 
 <script>
-// Example static data (replace later dynamically)
-const totalIncome = 1200;
-const totalExpenses = 800;
+// ==================== THEME ====================
+if(localStorage.getItem('theme')==='dark') document.documentElement.classList.add('dark');
+function setTheme(mode){
+    if(mode==='dark'){ document.documentElement.classList.add('dark'); localStorage.setItem('theme','dark'); }
+    else{ document.documentElement.classList.remove('dark'); localStorage.setItem('theme','light'); }
+}
+document.getElementById('lightTheme').onclick=()=>setTheme('light');
+document.getElementById('darkTheme').onclick=()=>setTheme('dark');
 
-document.getElementById('totalIncome').textContent = '$' + totalIncome;
-document.getElementById('totalExpenses').textContent = '$' + totalExpenses;
-document.getElementById('balance').textContent = '$' + (totalIncome - totalExpenses);
+// ==================== AUTH ====================
+const AUTH_KEY='currentUser';
+const ALL_USERS_KEY='appUsers';
+function checkAuth(){
+    const user = localStorage.getItem(AUTH_KEY);
+    const usernameEl = document.getElementById('loggedInUsername');
+    if(user) usernameEl.textContent=JSON.parse(user).username;
+    showPage('dashboard');
+}
+checkAuth();
+function logout(){ localStorage.removeItem(AUTH_KEY); location.reload(); }
 
-// Pie Chart
-new Chart(document.getElementById('pieChart'), {
-    type: 'pie',
-    data: {
-        labels: ['Income', 'Expenses'],
-        datasets: [{
-            data: [totalIncome, totalExpenses]
-        }]
-    }
-});
+// ==================== PAGE SWITCH ====================
+function showPage(page){
+    ['loginForm','regForm','dashboardPage','settingsPage'].forEach(p=>{
+        const el=document.getElementById(p);
+        if(el) el.style.display=(p===page+'Page'||p===page)?'block':'none';
+    });
+}
 
-// Bar Chart
-new Chart(document.getElementById('barChart'), {
-    type: 'bar',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-        datasets: [{
-            label: 'Income',
-            data: [300, 250, 200, 220, 230]
-        }, {
-            label: 'Expenses',
-            data: [150, 180, 160, 170, 200]
-        }]
-    }
+// ==================== REGISTRATION ====================
+const regForm=document.getElementById('regForm');
+if(regForm){
+    regForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const username=document.getElementById('regUsername').value.trim();
+        const password=document.getElementById('regPassword').value;
+        const email=document.getElementById('regEmail').value.trim();
+        const age=document.getElementById('regAge').value.trim();
+        if(!username||!password||!email||!age){ alert('Fill all fields'); return; }
+        let users=JSON.parse(localStorage.getItem(ALL_USERS_KEY)||'[]');
+        if(users.some(u=>u.username===username)){ alert('Username exists'); return; }
+        users.push({username,password,email,age});
+        localStorage.setItem(ALL_USERS_KEY,JSON.stringify(users));
+        alert('Registration successful');
+        showPage('loginForm');
+    });
+}
+
+// ==================== LOGIN ====================
+const loginForm=document.getElementById('loginForm');
+if(loginForm){
+    loginForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const username=document.getElementById('loginUsername').value.trim();
+        const password=document.getElementById('loginPassword').value;
+        let users=JSON.parse(localStorage.getItem(ALL_USERS_KEY)||'[]');
+        const user = users.find(u=>u.username===username && u.password===password);
+        if(user){ localStorage.setItem(AUTH_KEY,JSON.stringify(user)); showPage('dashboard'); }
+        else alert('Invalid username or password.');
+    });
+}
+
+// ==================== DASHBOARD ====================
+let transactions = JSON.parse(localStorage.getItem('transactions')||'[]');
+const totalIncomeEl=document.getElementById('totalIncome');
+const totalExpensesEl=document.getElementById('totalExpenses');
+const summaryBalanceEl=document.getElementById('summaryBalance');
+const pieCtx=document.getElementById('pieChart').getContext('2d');
+const barCtx=document.getElementById('barChart').getContext('2d');
+let pieChart, barChart;
+
+function updateDashboard(){
+    let totalIncome=0,totalExpenses=0;
+    transactions.forEach(t=>{ if(t.type==='Income') totalIncome+=t.amount; else totalExpenses+=t.amount; });
+    const balance=totalIncome-totalExpenses;
+    totalIncomeEl.textContent='$'+totalIncome.toFixed(2);
+    totalExpensesEl.textContent='$'+totalExpenses.toFixed(2);
+    summaryBalanceEl.textContent='$'+balance.toFixed(2);
+
+    if(pieChart) pieChart.destroy();
+    pieChart=new Chart(pieCtx,{
+        type:'pie',
+        data:{ labels:['Income','Expenses'], datasets:[{data:[totalIncome,totalExpenses], backgroundColor:['#22c55e','#ef4444']}]},
+        options:{ responsive:true }
+    });
+
+    const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const monthlyIncome=new Array(12).fill(0);
+    const monthlyExpenses=new Array(12).fill(0);
+    transactions.forEach(t=>{
+        const m=new Date(t.date).getMonth();
+        if(t.type==='Income') monthlyIncome[m]+=t.amount; else monthlyExpenses[m]+=t.amount;
+    });
+    if(barChart) barChart.destroy();
+    barChart=new Chart(barCtx,{
+        type:'bar',
+        data:{ labels:months, datasets:[
+            {label:'Income', data:monthlyIncome, backgroundColor:'#22c55e'},
+            {label:'Expenses', data:monthlyExpenses, backgroundColor:'#ef4444'}
+        ]},
+        options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+    });
+}
+
+updateDashboard();
+
+// ==================== SETTINGS ====================
+const isSaveLocal = localStorage.getItem('saveLocal')!=='false';
+document.getElementById('saveLocal').checked = isSaveLocal;
+document.getElementById('saveLocal').addEventListener('change',(e)=>{
+    localStorage.setItem('saveLocal', e.target.checked);
 });
 </script>
-
 </body>
 </html>
