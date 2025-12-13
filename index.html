@@ -140,7 +140,6 @@ new Chart(document.getElementById('pieChart'), {
     }
 });
 
-// الرسم البياني الشريطي
 let barChart;
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -222,23 +221,22 @@ function updateBarChart(monthCount = 6) {
     });
 }
 
-// تحديث الرسم البياني
+
 document.getElementById('chartRange').addEventListener('change', function() {
     updateBarChart(parseInt(this.value));
 });
 
-// تهيئة
+
 updateBarChart(6);
 
-// تسجيل الخروج
 function logout() {
     localStorage.removeItem('currentUser');
     window.location.href = 'index.html';
 }
 
-// تحديث اسم المستخدم
 const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 if (user.username) document.getElementById('loggedInUsername').textContent = user.username;
 </script>
 </body>
 </html>
+
