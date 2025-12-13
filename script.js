@@ -1,10 +1,8 @@
-// --- 1. إعدادات الثيم (Dark Mode) ---
-// بيشتغل في كل الصفحات
+//(Dark Mode) ---
 if(localStorage.getItem('theme') === 'dark') {
     document.documentElement.classList.add('dark');
 }
 
-// دالة تفعيل المود
 function setTheme(mode) {
     if(mode === 'dark') {
         document.documentElement.classList.add('dark');
@@ -15,27 +13,27 @@ function setTheme(mode) {
     }
 }
 
-// --- 2. كود التحقق (Authentication) ---
+
 const AUTH_KEY = 'currentUser';
 const ALL_USERS_KEY = 'appUsers';
 
-// التحقق من وجود مستخدم مسجل للدخول
+
 function checkAuth() {
     const user = localStorage.getItem(AUTH_KEY);
-    // لو مش في صفحة الـ Login أو Registration ومفيش مستخدم مسجل دخول، حوله للـ Login
+    
     if (window.location.pathname.indexOf('login.html') === -1 && 
         window.location.pathname.indexOf('registration.html') === -1 && 
         !user) {
         window.location.href = 'login.html';
     } 
-    // لو في صفحة الـ Login أو Registration وفي مستخدم مسجل دخول، حوله للـ Transactions
+   
     else if ((window.location.pathname.indexOf('login.html') !== -1 || 
               window.location.pathname.indexOf('registration.html') !== -1) && 
               user) {
         window.location.href = 'transactions.html';
     }
 
-    // عرض اسم المستخدم في القائمة الجانبية (للتجميل)
+
     if(user) {
         const currentUser = JSON.parse(user);
         const usernameEl = document.getElementById('loggedInUsername');
@@ -45,9 +43,9 @@ function checkAuth() {
     }
 }
 
-checkAuth(); // شغل التحقق عند تحميل أي صفحة
+checkAuth(); 
 
-// --- 2.1. منطق تسجيل الدخول (Login) ---
+
 const loginForm = document.getElementById('loginForm');
 if(loginForm) {
     loginForm.addEventListener('submit', (e) => {
@@ -68,7 +66,6 @@ if(loginForm) {
     });
 }
 
-// --- 2.2. منطق إنشاء حساب (Registration) ---
 const regForm = document.getElementById('regForm');
 if(regForm) {
     regForm.addEventListener('submit', (e) => {
@@ -99,17 +96,14 @@ if(regForm) {
     });
 }
 
-// --- 2.3. منطق تسجيل الخروج (Logout) ---
 window.logout = function() {
     localStorage.removeItem(AUTH_KEY);
     window.location.href = 'login.html';
 }
 
-// --- 3. كود صفحة المعاملات (Transactions) ---
 const tableBody = document.getElementById('tableBody');
 
-if (tableBody) { // بنتأكد إن الجدول موجود
-    // ... باقي كود الـ Transactions لم يتغير ...
+if (tableBody) { 
     let transactions = [];
     let editIndex = -1;
 
@@ -121,10 +115,10 @@ if (tableBody) { // بنتأكد إن الجدول موجود
     const clearBtn = document.getElementById('clearBtn');
     const balanceEl = document.getElementById('balance');
     
-    // إعداد الحفظ المحلي، لو مش موجود بنفترض إنه شغال
+   
     const isSaveLocal = localStorage.getItem('saveLocal') !== 'false'; 
 
-    // تحميل البيانات
+    
     if(localStorage.getItem('transactions')){
         transactions = JSON.parse(localStorage.getItem('transactions'));
         renderTable();
@@ -177,7 +171,6 @@ if (tableBody) { // بنتأكد إن الجدول موجود
         if(balanceEl) balanceEl.textContent = `${(income - expense).toFixed(2)} EGP`;
     }
 
-    // جعل الدوال Global للتعامل مع onclick
     window.delT = function(i){ 
         if(!confirm('Delete this transaction?')) return; 
         transactions.splice(i,1); 
@@ -196,7 +189,6 @@ if (tableBody) { // بنتأكد إن الجدول موجود
     }
 }
 
-// --- 4. كود صفحة الإعدادات (Settings) ---
 const saveLocalCheckbox = document.getElementById('saveLocal');
 if(saveLocalCheckbox) {
     // تحميل حالة الـ Checkbox
@@ -206,7 +198,7 @@ if(saveLocalCheckbox) {
         localStorage.setItem('saveLocal', e.target.checked);
     });
 
-    // ربط زراير الثيم
+
     const lightBtn = document.getElementById('lightTheme');
     const darkBtn = document.getElementById('darkTheme');
     
@@ -277,3 +269,4 @@ if (window.location.pathname.includes("dashboard.html")) {
     });
 
 }
+
