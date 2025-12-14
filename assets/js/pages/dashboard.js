@@ -46,11 +46,11 @@ function updateDashboard() {
         }
     });
 
-    if(sumIncomeEl) sumIncomeEl.textContent = `$${totalIncome.toFixed(2)}`;
-    if(incomeAmountEl) incomeAmountEl.textContent = `$${totalIncome.toFixed(2)}`;
-    if(sumExpenseEl) sumExpenseEl.textContent = `$${totalExpenses.toFixed(2)}`;
-    if(expenseAmountEl) expenseAmountEl.textContent = `$${totalExpenses.toFixed(2)}`;
-    if(sumBalanceEl) sumBalanceEl.textContent = `$${(totalIncome - totalExpenses).toFixed(2)}`;
+    if(sumBalanceEl) animateValue("balance", totalIncome - totalExpenses);
+    if(sumIncomeEl) animateValue("totalIncome", totalIncome);
+    if(incomeAmountEl) animateValue("incomeAmount", totalIncome);
+    if(sumExpenseEl) animateValue("totalExpenses", totalExpenses);
+    if(expenseAmountEl) animateValue("expenseAmount", totalExpenses);
 
     const ratio = totalExpenses > 0 ? (totalIncome / totalExpenses).toFixed(2) : "∞";
     if(pieRatioEl) pieRatioEl.textContent = `${ratio}:1`;
@@ -73,7 +73,8 @@ function updateDashboard() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '65%'
+                cutout: '65%',
+                animation: {duration: 1500}
             }
         });
     }
@@ -81,6 +82,21 @@ function updateDashboard() {
     // Initial Bar Chart Render
     const range = chartRangeSelect ? parseInt(chartRangeSelect.value) : 6;
     updateBarChart(range);
+}
+
+function animateValue(id, end) {
+    const el = document.getElementById(id);
+    if(!el) return;
+    let start = 0, duration = 800;
+    const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const val = progress * end;
+        el.textContent = '$' + val.toFixed(2);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = '$' + end.toFixed(2);
+    };
+    requestAnimationFrame(step);
 }
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
