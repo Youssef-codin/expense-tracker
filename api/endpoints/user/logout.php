@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/ApiResponse.php';
+require_once '../../classes/ApiResponse.php';
 
 session_start();
 

@@ -7,7 +7,7 @@ class Database
     private $username = 'expense_app';
     private $password = 'password123';
 
-    private static $instance = null; // The single instance
+    private static $instance = null;
     private $conn;
 
     private function __construct()

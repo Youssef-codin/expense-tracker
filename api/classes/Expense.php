@@ -1,5 +1,5 @@
 <?php
-require_once 'Database.php';
+require_once __DIR__ . '/Database.php';
 
 class Expense
 {
@@ -60,6 +60,15 @@ class Expense
             $userId
         ]);
 
+        return true;
+    }
+
+    public static function deleteAll($userId)
+    {
+        $db = Database::connect();
+        $sql = "DELETE FROM expenses WHERE user_id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$userId]);
         return true;
     }
 }

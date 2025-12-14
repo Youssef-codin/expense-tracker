@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  title: Expense Tracker API
+  description: API for managing users and expenses in the Expense Tracker application.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api/endpoints
+    description: Local Development Server
+
+paths:
+  # ----------------------------
+  # User Management
+  # ----------------------------
+  /user/register.php:
+    post:
+      summary: Register a new user
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: "newuser"
+                password:
+                  type: string
+                  format: password
+                  example: "secret123"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Missing fields or username taken
+
+  /user/login.php:
+    post:
+      summary: Login user
+      description: Authenticates user and sets PHPSESSID cookie.
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: "newuser"
+                password:
+                  type: string
+                  format: password
+                  example: "secret123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: Invalid credentials
+
+  /user/logout.php:
+    get:
+      summary: Logout user
+      description: Destroys the session.
+      tags: [User]
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /user/delete_account.php:
+    post:
+      summary: Delete account
+      description: Permanently deletes the logged-in user and all their data.
+      tags: [User]
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: Account deleted successfully
+        '401':
+          description: Not logged in
+
+  # ----------------------------
+  # Expenses
+  # ----------------------------
+  /expense/get_expenses.php:
+    get:
+      summary: Get all expenses
+      description: Retrieves all expenses for the logged-in user.
+      tags: [Expense]
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: List of expenses
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Expense'
+
+  /expense/add_expense.php:
+    post:
+      summary: Add a new expense
+      tags: [Expense]
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - amount
+                - date
+              properties:
+                title:
+                  type: string
+                  example: "Grocery Shopping"
+                amount:
+                  type: number
+                  format: float
+                  example: 45.50
+                category:
+                  type: string
+                  example: "Food"
+                  default: "General"
+                date:
+                  type: string
+                  format: date
+                  example: "2023-11-25"
+      responses:
+        '200':
+          description: Expense added successfully
+
+  /expense/edit_expense.php:
+    post:
+      summary: Edit an existing expense
+      tags: [Expense]
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - title
+                - amount
+                - date
+              properties:
+                id:
+                  type: integer
+                  example: 12
+                title:
+                  type: string
+                amount:
+                  type: number
+                category:
+                  type: string
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: Expense updated successfully
+
+  /expense/delete_expense.php:
+    post:
+      summary: Delete an expense
+      tags: [Expense]
+      security:
+        - sessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  example: 12
+      responses:
+        '200':
+          description: Expense deleted successfully
+
+  /expense/delete_all_expenses.php:
+    post:
+      summary: Delete all expenses
+      description: Clears all transaction data for the logged-in user.
+      tags: [Expense]
+      security:
+        - sessionCookie: []
+      responses:
+        '200':
+          description: All expenses deleted successfully
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: PHPSESSID
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Operation successful"
+        data:
+          type: object
+          nullable: true
+
+    Expense:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        title:
+          type: string
+        amount:
+          type: string # PHP returns decimals as strings sometimes, or change to number
+          example: "45.50"
+        category:
+          type: string
+        date:
+          type: string
+          format: date
