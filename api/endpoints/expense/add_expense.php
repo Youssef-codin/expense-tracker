@@ -1,6 +1,6 @@
 <?php
-require_once '../classes/ApiResponse.php';
-require_once '../classes/Expense.php';
+require_once '../../classes/ApiResponse.php';
+require_once '../../classes/Expense.php';
 
 session_start();
 

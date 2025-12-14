@@ -1,22 +1,22 @@
 <?php
-require_once 'Database.php';
+require_once __DIR__ . '/Database.php';
 
 class User
 {
-    public static function register($username, $password)
+    public static function register($username, $email, $password)
     {
         $hash = password_hash($password, PASSWORD_BCRYPT);
 
         try {
             Database::query(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
-                [$username, $hash]
+                "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+                [$username, $email, $hash]
             );
 
             return Database::connect()->lastInsertId();
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
-                throw new Exception("Username taken");
+                throw new Exception("Username or Email already exists");
             }
             throw $e;
         }
@@ -32,5 +32,11 @@ class User
             return $user;
         }
         return null;
+    }
+
+    public static function delete($id)
+    {
+        $stmt = Database::query("DELETE FROM users WHERE id = ?", [$id]);
+        return $stmt->rowCount() > 0;
     }
 }
