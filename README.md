@@ -14,4 +14,12 @@ A simple expense tracking application built with PHP, MySQL, and Vanilla JS.
 Open your terminal in the root directory of the project (`/expensetracker`).
 Run the built-in PHP server:
 ```bash
-php -S localhost:8000
+## API Documentation
+
+The API endpoints are documented using the OpenAPI 3.0 specification. You can find the definition file at `API_OPENAPI.yaml` in the root directory.
+
+To view or interact with the API documentation:
+1.  Open the `API_OPENAPI.yaml` file.
+2.  Copy its content.
+3.  Paste it into the [Swagger Editor](https://editor.swagger.io/).
+
