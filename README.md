@@ -4,45 +4,6 @@ A simple expense tracking application built with PHP, MySQL, and Vanilla JS.
 
 ---
 
-## Prerequisites
-
-- PHP 8.0+
-- MySQL (or MariaDB / XAMPP)
-
----
-
-## Database Setup
-
-1. Create a database named `expense_tracker`.
-2. Import `assets/sql/schema.sql` into it and run the script.
-3. Update `api/classes/Database.php` with your database credentials.
-
----
-
-## How to Run
-
-1. Open your terminal in the root directory of the project (`/expensetracker`).
-2. Run the built-in PHP server:
-    ```bash
-    php -S localhost:8000
-    ```
-3. Open your browser and navigate to `http://localhost:8000`.
-
----
-
-## API Documentation
-
-The API endpoints are documented using the OpenAPI 3.0 specification.
-You can find the definition file at `API_OPENAPI.yaml` in the root directory.
-
-To view or interact with the API documentation:
-
-1. Open the `API_OPENAPI.yaml` file.
-2. Copy its content.
-3. Paste it into the [Swagger Editor](https://editor.swagger.io/).
-
----
-
 ## Features
 
 - Add, edit, delete expenses dynamically
@@ -52,3 +13,63 @@ To view or interact with the API documentation:
 - Session-based authentication
 
 ---
+
+## Getting Started
+
+You can run this project using **Docker** (Recommended) or **Manually**.
+
+### Option 1: Run with Docker (Recommended)
+
+**Prerequisites:**
+- Docker
+- Docker Compose
+
+**Steps:**
+
+1.  Navigate to the project root directory.
+2.  Build and start the services:
+    ```bash
+    docker compose up -d --build
+    ```
+3.  Access the application at `http://localhost:8000`.
+4.  To stop the application:
+    ```bash
+    docker compose down
+    ```
+
+*Note: The database is automatically initialized with the required schema.*
+
+---
+
+### Option 2: Run Manually
+
+**Prerequisites:**
+- PHP 8.0+
+- MySQL (or MariaDB / XAMPP)
+
+**Steps:**
+
+1.  **Database Setup:**
+    - Create a database named `expense_tracker`.
+    - Import `assets/sql/schema.sql` into your database.
+    - If your database credentials differ from the defaults (User: `expense_app`, Pass: `password123`, Host: `127.0.0.1`), update them in `api/classes/Database.php` or set the environment variables (`DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`).
+
+2.  **Start the Server:**
+    - Open your terminal in the root directory.
+    - Run the built-in PHP server:
+      ```bash
+      php -S localhost:8000
+      ```
+
+3.  Access the application at `http://localhost:8000`.
+
+---
+
+## API Documentation
+
+The API endpoints are documented using the OpenAPI 3.0 specification.
+
+To view the documentation:
+1. Open the `API_OPENAPI.yaml` file located in the root directory.
+2. Copy its content.
+3. Paste it into the [Swagger Editor](https://editor.swagger.io/).
