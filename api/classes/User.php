@@ -5,21 +5,19 @@ class User
 {
     public static function register($username, $email, $password)
     {
+        $checkStmt = Database::query("SELECT id FROM users WHERE username = ? OR email = ?", [$username, $email]);
+        if ($checkStmt->rowCount() > 0) {
+            return false;
+        }
+
         $hash = password_hash($password, PASSWORD_BCRYPT);
 
-        try {
-            Database::query(
-                "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                [$username, $email, $hash]
-            );
+        Database::query(
+            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+            [$username, $email, $hash]
+        );
 
-            return Database::connect()->lastInsertId();
-        } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                throw new Exception("Username or Email already exists");
-            }
-            throw $e;
-        }
+        return true;
     }
 
     public static function login($username, $password)

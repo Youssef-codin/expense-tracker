@@ -18,17 +18,15 @@ class Database
         $this->password = getenv('DB_PASSWORD') ?: 'password123';
 
         try {
-            $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
+            $source = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
 
-            $this->conn = new PDO($dsn, $this->username, $this->password);
+            $this->conn = new PDO($source, $this->username, $this->password);
 
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            header('Content-Type: application/json');
-            http_response_code(500);
-            echo json_encode(["success" => false, "message" => "DB Connection Error: " . $e->getMessage()]);
+            ApiResponse::send(500, false, "DB Connection Error: " . $e->getMessage());
             exit;
         }
     }
@@ -44,8 +42,13 @@ class Database
 
     public static function query($sql, $params = [])
     {
-        $stmt = self::connect()->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
+        try {
+            $stmt = self::connect()->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            error_log("DB error: " . $e->getMessage());
+            throw $e;
+        }
     }
 }

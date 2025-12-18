@@ -8,12 +8,8 @@ if (!isset($_SESSION['user_id'])) {
     ApiResponse::send(401, false, "Please login");
 }
 
-try {
-    $userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'];
 
-    $expenses = Expense::getAll($userId);
+$expenses = Expense::getAll($userId);
 
-    ApiResponse::send(200, true, "successfully got expenses", $expenses);
-} catch (Exception $e) {
-    ApiResponse::send(500, false, "Server Error: " . $e->getMessage());
-}
+ApiResponse::send(200, true, "successfully got expenses", $expenses);

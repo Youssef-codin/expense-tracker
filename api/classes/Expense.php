@@ -5,53 +5,45 @@ class Expense
 {
     public static function getAll($userId)
     {
-        $db = Database::connect();
         $sql = "SELECT * FROM expenses WHERE user_id = ? ORDER BY date DESC";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll();
+        $stmt = Database::query($sql, [$userId]);
+        $data = $stmt->fetchAll();
+
+        return $data;
     }
 
     public static function add($userId, $data)
     {
-        $db = Database::connect();
         $sql = "INSERT INTO expenses (user_id, title, amount, category, date) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $db->prepare($sql);
-
-        return $stmt->execute([
+        Database::query($sql, [
             $userId,
             $data['title'],
             $data['amount'],
             $data['category'],
             $data['date']
         ]);
+
+        return true;
     }
 
     public static function delete($expenseId, $userId)
     {
-        $db = Database::connect();
         $sql = "DELETE FROM expenses WHERE id = ? AND user_id = ?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$expenseId, $userId]);
+        $stmt = Database::query($sql, [$expenseId, $userId]);
 
         return $stmt->rowCount() > 0;
     }
 
     public static function update($expenseId, $userId, $data)
     {
-        $db = Database::connect();
+        $stmt = Database::query("SELECT id FROM expenses WHERE id = ? AND user_id = ?", [$expenseId, $userId]);
 
-        $checkStmt = $db->prepare("SELECT id FROM expenses WHERE id = ? AND user_id = ?");
-        $checkStmt->execute([$expenseId, $userId]);
-
-        if ($checkStmt->rowCount() === 0) {
+        if ($stmt->rowCount() === 0) {
             return false;
         }
 
         $sql = "UPDATE expenses SET title = ?, amount = ?, category = ?, date = ? WHERE id = ? AND user_id = ?";
-        $stmt = $db->prepare($sql);
-
-        $stmt->execute([
+        Database::query($sql, [
             $data['title'],
             $data['amount'],
             $data['category'],
@@ -65,10 +57,8 @@ class Expense
 
     public static function deleteAll($userId)
     {
-        $db = Database::connect();
         $sql = "DELETE FROM expenses WHERE user_id = ?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$userId]);
+        Database::query($sql, [$userId]);
         return true;
     }
 }

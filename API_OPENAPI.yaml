@@ -150,8 +150,8 @@ paths:
                   example: 45.50
                 category:
                   type: string
-                  example: "Food"
-                  default: "General"
+                  enum: ['Income', 'Expense']
+                  example: "Expense"
                 date:
                   type: string
                   format: date
@@ -187,6 +187,7 @@ paths:
                   type: number
                 category:
                   type: string
+                  enum: ['Income', 'Expense']
                 date:
                   type: string
                   format: date
@@ -265,6 +266,7 @@ components:
           example: "45.50"
         category:
           type: string
+          enum: ['Income', 'Expense']
         date:
           type: string
           format: date
