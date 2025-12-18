@@ -2,16 +2,21 @@
 
 class Database
 {
-    private $host = '127.0.0.1';
-    private $db_name = 'expense_tracker';
-    private $username = 'expense_app';
-    private $password = 'password123';
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
 
     private static $instance = null;
     private $conn;
 
     private function __construct()
     {
+        $this->host = getenv('DB_HOST') ?: '127.0.0.1';
+        $this->db_name = getenv('DB_NAME') ?: 'expense_tracker';
+        $this->username = getenv('DB_USER') ?: 'expense_app';
+        $this->password = getenv('DB_PASSWORD') ?: 'password123';
+
         try {
             $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
 

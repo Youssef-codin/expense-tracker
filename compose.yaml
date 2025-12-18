@@ -1,0 +1,28 @@
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=expense_tracker
+      - DB_USER=expense_app
+      - DB_PASSWORD=password123
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=expense_tracker
+      - MYSQL_USER=expense_app
+      - MYSQL_PASSWORD=password123
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./assets/sql/schema.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db-data:
