@@ -1,247 +1,235 @@
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Settings - Expense Tracker</title>
 
     <script>
-        tailwind.config = { darkMode: 'class' }
+        tailwind.config = {darkMode: 'class'}
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-<div class="min-h-screen flex">
+    <div class="min-h-screen flex">
 
-    <!-- Sidebar (مطابق لصفحة Transactions) -->
-    <aside class="w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-8">
-        <div class="flex items-center gap-3 mb-8">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-                ET
-            </div>
-            <div>
-                <div class="text-lg font-semibold">Expense Tracker</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">
-                    Personal Finance
+        <aside class="w-64 bg-white dark:bg-gray-800 shadow-lg px-6 py-8">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                    ET
+                </div>
+                <div>
+                    <div class="text-lg font-semibold">Expense Tracker</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">
+                        Personal Finance
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <nav class="space-y-1">
-            <a href="transactions.html"
-               class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                Transactions
-            </a>
+            <nav class="space-y-1">
+                <a href="transactions.html" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    Transactions
+                </a>
 
-            <a href="dashboard.html"
-               class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                Dashboard
-            </a>
+                <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    Dashboard
+                </a>
 
-            <a href="#"
-               class="block px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600
+                <a href="#" class="block px-3 py-2 rounded-lg bg-indigo-50 text-indigo-600
                       dark:bg-indigo-700/20 dark:text-indigo-200 font-medium">
-                Settings
-            </a>
+                    Settings
+                </a>
 
-            <a href="#" onclick="logout()"
-               class="block px-3 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700
+                <a href="#" onclick="logout()" class="block px-3 py-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-700
                       text-red-600 dark:text-red-400 font-medium mt-4
                       border-t pt-2 border-gray-100 dark:border-gray-700">
-                Logout
-            </a>
-        </nav>
+                    Logout
+                </a>
+            </nav>
 
-        <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
-            <div>Logged in as</div>
-            <div id="loggedInUsername" class="font-medium mt-1">User</div>
-        </div>
-    </aside>
-
-    <!-- Main -->
-    <main class="flex-1 p-8">
-        <section class="space-y-6">
-
-            <div>
-                <h1 class="text-2xl font-semibold">Settings</h1>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Manage your preferences and account
-                </p>
+            <div class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+                <div>Logged in as</div>
+                <div id="loggedInUsername" class="font-medium mt-1">User</div>
             </div>
+        </aside>
 
-            <!-- Account Info -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">Account Information</h2>
+        <!-- Main -->
+        <main class="flex-1 p-8">
+            <section class="space-y-6">
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">
-                            Username
-                        </label>
-                        <input id="username" readonly
-                               class="mt-1 w-full rounded-md border-gray-200 dark:border-gray-700
-                                      bg-white dark:bg-gray-900 px-3 py-2">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">
-                            Email
-                        </label>
-                        <input id="email" readonly
-                               class="mt-1 w-full rounded-md border-gray-200 dark:border-gray-700
-                                      bg-white dark:bg-gray-900 px-3 py-2">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Management -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">Data Management</h2>
-
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <p class="font-medium">Save transactions locally</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Store your data in browser storage
-                        </p>
-                    </div>
-                    <input id="saveLocal" type="checkbox"
-                           class="w-5 h-5 accent-indigo-600" checked>
+                <div>
+                    <h1 class="text-2xl font-semibold">Settings</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Manage your preferences and account
+                    </p>
                 </div>
 
-                <button id="clearData"
-                        class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700
+                <!-- Account Info -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">Account Information</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                                Username
+                            </label>
+                            <input id="username" readonly class="mt-1 w-full rounded-md border-gray-200 dark:border-gray-700
+                                      bg-white dark:bg-gray-900 px-3 py-2">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                                Email
+                            </label>
+                            <input id="email" readonly class="mt-1 w-full rounded-md border-gray-200 dark:border-gray-700
+                                      bg-white dark:bg-gray-900 px-3 py-2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Management -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">Data Management</h2>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="font-medium">Save transactions locally</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Store your data in browser storage
+                            </p>
+                        </div>
+                        <input id="saveLocal" type="checkbox" class="w-5 h-5 accent-indigo-600" checked>
+                    </div>
+
+                    <button id="clearData" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700
                                hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg">
-                    Clear All Transaction Data
-                </button>
-            </div>
+                        Clear All Transaction Data
+                    </button>
+                </div>
 
-            <!-- Statistics -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">App Statistics</h2>
+                <!-- Statistics -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">App Statistics</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                            Total Transactions
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                Total Transactions
+                            </div>
+                            <div id="totalTransactions" class="text-2xl font-bold text-indigo-600">
+                                0
+                            </div>
                         </div>
-                        <div id="totalTransactions"
-                             class="text-2xl font-bold text-indigo-600">
-                            0
-                        </div>
-                    </div>
 
-                    <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                            Account Age
+                        <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                Account Age
+                            </div>
+                            <div id="accountAge" class="text-2xl font-bold text-green-500">
+                                Today
+                            </div>
                         </div>
-                        <div id="accountAge"
-                             class="text-2xl font-bold text-green-500">
-                            Today
-                        </div>
-                    </div>
 
-                    <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                            Last Login
-                        </div>
-                        <div id="lastLogin"
-                             class="text-2xl font-bold text-blue-500">
-                            Now
+                        <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                Last Login
+                            </div>
+                            <div id="lastLogin" class="text-2xl font-bold text-blue-500">
+                                Now
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Danger Zone -->
-            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200
+                <!-- Danger Zone -->
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200
                         dark:border-red-800 rounded-xl p-6">
-                <h2 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-2">
-                    ⚠️ Danger Zone
-                </h2>
+                    <h2 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-2">
+                        ⚠️ Danger Zone
+                    </h2>
 
-                <p class="text-sm text-red-600 dark:text-red-400 mb-4">
-                    These actions are irreversible.
-                </p>
+                    <p class="text-sm text-red-600 dark:text-red-400 mb-4">
+                        These actions are irreversible.
+                    </p>
 
-                <div class="flex gap-3 flex-col sm:flex-row">
-                    <button id="resetSettings"
-                            class="px-4 py-3 bg-white dark:bg-gray-800
+                    <div class="flex gap-3 flex-col sm:flex-row">
+                        <button id="resetSettings" class="px-4 py-3 bg-white dark:bg-gray-800
                                    border border-red-300 dark:border-red-700
                                    text-red-600 dark:text-red-400
                                    hover:bg-red-100 dark:hover:bg-red-900/30
                                    rounded-lg">
-                        Reset All Settings
-                    </button>
+                            Reset All Settings
+                        </button>
 
-                    <button id="deleteAccount"
-                            class="px-4 py-3 bg-red-600 hover:bg-red-700
+                        <button id="deleteAccount" class="px-4 py-3 bg-red-600 hover:bg-red-700
                                    text-white rounded-lg">
-                        Delete Account
-                    </button>
+                            Delete Account
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-        </section>
-    </main>
-</div>
+            </section>
+        </main>
+    </div>
 
-<script>
-const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-if (currentUser.username) {
-    loggedInUsername.textContent = currentUser.username;
-    username.value = currentUser.username;
-    email.value = currentUser.email || '';
-}
+        if (currentUser.username) {
+            loggedInUsername.textContent = currentUser.username;
+            username.value = currentUser.username;
+            email.value = currentUser.email || '';
+        }
 
-function updateStats() {
-    const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
-    totalTransactions.textContent = transactions.length;
+        function updateStats() {
+            const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+            totalTransactions.textContent = transactions.length;
 
-    if (currentUser.createdAt) {
-        const days = Math.floor((new Date() - new Date(currentUser.createdAt)) / 86400000);
-        accountAge.textContent = days === 0 ? 'Today' : days + ' days';
-    }
+            if (currentUser.createdAt) {
+                const days = Math.floor((new Date() - new Date(currentUser.createdAt)) / 86400000);
+                accountAge.textContent = days === 0 ? 'Today' : days + ' days';
+            }
 
-    lastLogin.textContent =
-        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-updateStats();
-
-saveLocal.checked = localStorage.getItem('saveLocal') !== 'false';
-saveLocal.onchange = () =>
-    localStorage.setItem('saveLocal', saveLocal.checked);
-
-clearData.onclick = () => {
-    if (confirm('Delete all transactions?')) {
-        localStorage.removeItem('transactions');
+            lastLogin.textContent =
+                new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        }
         updateStats();
-    }
-};
 
-resetSettings.onclick = () => {
-    if (confirm('Reset settings to default?')) {
-        localStorage.removeItem('saveLocal');
-        saveLocal.checked = true;
-    }
-};
+        saveLocal.checked = localStorage.getItem('saveLocal') !== 'false';
+        saveLocal.onchange = () =>
+            localStorage.setItem('saveLocal', saveLocal.checked);
 
-deleteAccount.onclick = () => {
-    if (confirm('This will DELETE your account and ALL data. Continue?')) {
-        localStorage.clear();
-        window.location.replace('login.html');
-    }
-};
+        clearData.onclick = () => {
+            if (confirm('Delete all transactions?')) {
+                localStorage.removeItem('transactions');
+                updateStats();
+            }
+        };
 
-function logout() {
-    if (confirm('Logout now?')) {
-        localStorage.removeItem('currentUser');
-        window.location.replace('login.html');
-    }
-}
-</script>
+        resetSettings.onclick = () => {
+            if (confirm('Reset settings to default?')) {
+                localStorage.removeItem('saveLocal');
+                saveLocal.checked = true;
+            }
+        };
+
+        deleteAccount.onclick = () => {
+            if (confirm('This will DELETE your account and ALL data. Continue?')) {
+                localStorage.clear();
+                window.location.replace('login.html');
+            }
+        };
+
+        function logout() {
+            if (confirm('Logout now?')) {
+                localStorage.removeItem('currentUser');
+                window.location.replace('login.html');
+            }
+        }
+    </script>
 
 </body>
+
 </html>

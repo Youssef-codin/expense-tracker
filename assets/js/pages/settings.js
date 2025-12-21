@@ -53,7 +53,6 @@ if (saveLocalCheckbox) {
     saveLocalCheckbox.parentElement.title = "Data is always saved to the cloud now";
 }
 
-// Clear data
 const clearDataBtn = document.getElementById('clearData');
 if (clearDataBtn) {
     clearDataBtn.addEventListener('click', async function() {
