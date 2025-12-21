@@ -1,5 +1,5 @@
 import { AUTH_KEY } from './constants.js';
-import { Api } from './api.js';
+import { AuthService } from './api_service.js';
 
 export function getCurrentUser() {
     const user = localStorage.getItem(AUTH_KEY);
@@ -10,14 +10,13 @@ export function checkAuth() {
     const user = getCurrentUser();
     const path = window.location.pathname;
 
-    // Simple check: if on login/register pages
     const isAuthPage = path.includes('login.html') || path.includes('registration.html');
 
     if (!isAuthPage && !user) {
         window.location.href = 'login.html';
     }
     else if (isAuthPage && user) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'index.html';
     }
 
     if (user) {
@@ -30,7 +29,7 @@ export function checkAuth() {
 
 export async function logout() {
     try {
-        await Api.get('/user/logout.php');
+        await AuthService.logout();
     } catch (e) {
         console.warn('Logout API call failed, but clearing local state anyway', e);
     }

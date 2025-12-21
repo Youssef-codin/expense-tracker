@@ -1,6 +1,6 @@
 import { checkAuth, setupLogout } from '../core/auth.js';
 import '../core/theme.js';
-import { Api } from '../core/api.js';
+import { ExpenseService } from '../core/api_service.js';
 
 checkAuth();
 setupLogout();
@@ -23,8 +23,8 @@ initDashboard();
 
 async function initDashboard() {
     try {
-        const response = await Api.get('/expense/get_expenses.php');
-        if (response.success && Array.isArray(response.data)) {
+        const response = await ExpenseService.getAll();
+        if (response.success) {
             transactions = response.data;
             updateDashboard();
         }

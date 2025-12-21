@@ -1,7 +1,7 @@
 import { checkAuth, setupLogout, getCurrentUser } from '../core/auth.js';
 import '../core/theme.js';
 import { THEME_KEY, AUTH_KEY } from '../core/constants.js';
-import { Api } from '../core/api.js';
+import { ExpenseService, AuthService } from '../core/api_service.js';
 
 checkAuth();
 setupLogout();
@@ -19,8 +19,8 @@ if (currentUser.username) {
 
 async function updateStats() {
     try {
-        const response = await Api.get('/expense/get_expenses.php');
-        if (response.success && Array.isArray(response.data)) {
+        const response = await ExpenseService.getAll();
+        if (response.success) {
             const count = response.data.length;
             const totalTransEl = document.getElementById('totalTransactions');
             if (totalTransEl) totalTransEl.textContent = count;
@@ -58,7 +58,7 @@ if (clearDataBtn) {
     clearDataBtn.addEventListener('click', async function() {
         if (confirm('Are you sure you want to clear ALL transaction data? This cannot be undone.')) {
             try {
-                await Api.post('/expense/delete_all_expenses.php');
+                await ExpenseService.deleteAll();
                 alert('All transaction data has been cleared successfully.');
                 updateStats();
             } catch (e) {
@@ -84,8 +84,7 @@ if (deleteAccountBtn) {
     deleteAccountBtn.addEventListener('click', async function() {
         if (confirm('WARNING: This will permanently delete your account and all associated data. Are you absolutely sure?')) {
             try {
-                await Api.post('/user/delete_account.php');
-                // Client-side cleanup
+                await AuthService.deleteAccount();
                 localStorage.removeItem(AUTH_KEY);
                 alert('Account deleted.');
                 window.location.href = 'login.html';

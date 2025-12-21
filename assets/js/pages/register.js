@@ -1,6 +1,6 @@
 import { checkAuth } from '../core/auth.js';
 import '../core/theme.js';
-import { Api } from '../core/api.js';
+import { AuthService } from '../core/api_service.js';
 
 checkAuth();
 
@@ -18,7 +18,7 @@ if (regForm) {
         }
 
         try {
-            await Api.post('/user/register.php', { username, email, password });
+            await AuthService.register(username, email, password);
             alert('Registration successful! Please login.');
             window.location.href = 'login.html';
         } catch (error) {

@@ -33,7 +33,7 @@
                     Transactions
                 </a>
 
-                <a href="dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                     Dashboard
                 </a>
 
@@ -174,62 +174,6 @@
         </main>
     </div>
 
-    <script>
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-        if (currentUser.username) {
-            loggedInUsername.textContent = currentUser.username;
-            username.value = currentUser.username;
-            email.value = currentUser.email || '';
-        }
-
-        function updateStats() {
-            const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
-            totalTransactions.textContent = transactions.length;
-
-            if (currentUser.createdAt) {
-                const days = Math.floor((new Date() - new Date(currentUser.createdAt)) / 86400000);
-                accountAge.textContent = days === 0 ? 'Today' : days + ' days';
-            }
-
-            lastLogin.textContent =
-                new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-        }
-        updateStats();
-
-        saveLocal.checked = localStorage.getItem('saveLocal') !== 'false';
-        saveLocal.onchange = () =>
-            localStorage.setItem('saveLocal', saveLocal.checked);
-
-        clearData.onclick = () => {
-            if (confirm('Delete all transactions?')) {
-                localStorage.removeItem('transactions');
-                updateStats();
-            }
-        };
-
-        resetSettings.onclick = () => {
-            if (confirm('Reset settings to default?')) {
-                localStorage.removeItem('saveLocal');
-                saveLocal.checked = true;
-            }
-        };
-
-        deleteAccount.onclick = () => {
-            if (confirm('This will DELETE your account and ALL data. Continue?')) {
-                localStorage.clear();
-                window.location.replace('login.html');
-            }
-        };
-
-        function logout() {
-            if (confirm('Logout now?')) {
-                localStorage.removeItem('currentUser');
-                window.location.replace('login.html');
-            }
-        }
-    </script>
-
+    <script type="module" src="assets/js/pages/settings.js"></script>
 </body>
-
 </html>

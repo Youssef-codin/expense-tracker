@@ -1,7 +1,7 @@
 import { checkAuth } from '../core/auth.js';
 import '../core/theme.js';
 import { AUTH_KEY } from '../core/constants.js';
-import { Api } from '../core/api.js';
+import { AuthService } from '../core/api_service.js';
 
 checkAuth();
 
@@ -13,7 +13,7 @@ if (loginForm) {
         const password = document.getElementById('loginPassword').value;
 
         try {
-            const response = await Api.post('/user/login.php', { username, password });
+            const response = await AuthService.login(username, password);
 
             if (response.data) {
                 localStorage.setItem(AUTH_KEY, JSON.stringify(response.data));

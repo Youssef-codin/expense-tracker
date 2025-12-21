@@ -1,6 +1,6 @@
 import { checkAuth, setupLogout } from '../core/auth.js';
 import { setTheme } from '../core/theme.js';
-import { Api } from '../core/api.js';
+import { ExpenseService } from '../core/api_service.js';
 
 checkAuth();
 setupLogout();
@@ -26,7 +26,7 @@ fetchTransactions();
 
 async function fetchTransactions() {
     try {
-        const response = await Api.get('/expense/get_expenses.php');
+        const response = await ExpenseService.getAll();
         if (response.success && Array.isArray(response.data)) {
             transactions = response.data;
             renderTable();
@@ -66,16 +66,16 @@ if (saveBtn) {
 
         try {
             if (editId === null) {
-                // Add
-                await Api.post('/expense/add_expense.php', payload);
+                // add
+                await ExpenseService.add(payload);
             } else {
-                // Edit
+                // edit
                 payload.id = editId;
-                await Api.post('/expense/edit_expense.php', payload);
+                await ExpenseService.update(payload);
             }
 
             clearForm();
-            await fetchTransactions(); // Reload data
+            await fetchTransactions();
         } catch (error) {
             alert('Operation failed: ' + error.message);
         }
@@ -124,7 +124,7 @@ if (tableBody) {
         if (action === 'delete') {
             if (!confirm('Delete this transaction?')) return;
             try {
-                await Api.post('/expense/delete_expense.php', { id });
+                await ExpenseService.delete(id);
                 fetchTransactions();
             } catch (error) {
                 alert('Delete failed: ' + error.message);
