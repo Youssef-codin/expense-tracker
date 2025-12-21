@@ -6,7 +6,6 @@ import { Api } from '../core/api.js';
 checkAuth();
 setupLogout();
 
-// Load user data
 const currentUser = getCurrentUser() || {};
 if (currentUser.username) {
     const loggedInUserEl = document.getElementById('loggedInUsername');
@@ -18,7 +17,6 @@ if (currentUser.username) {
     if (emailEl && currentUser.email) emailEl.value = currentUser.email;
 }
 
-// Update statistics
 async function updateStats() {
     try {
         const response = await Api.get('/expense/get_expenses.php');
@@ -49,11 +47,8 @@ async function updateStats() {
     }
 }
 
-// Save local toggle (Visual only now, as we enforce backend storage)
 const saveLocalCheckbox = document.getElementById('saveLocal');
 if (saveLocalCheckbox) {
-    // It's checked by default in HTML, let's just leave it as a "dummy" or persistent pref
-    // logic removed as we use DB now.
     saveLocalCheckbox.disabled = true;
     saveLocalCheckbox.parentElement.title = "Data is always saved to the cloud now";
 }
@@ -74,7 +69,6 @@ if (clearDataBtn) {
     });
 }
 
-// Reset settings
 const resetSettingsBtn = document.getElementById('resetSettings');
 if (resetSettingsBtn) {
     resetSettingsBtn.addEventListener('click', function() {
@@ -86,7 +80,6 @@ if (resetSettingsBtn) {
     });
 }
 
-// Delete account
 const deleteAccountBtn = document.getElementById('deleteAccount');
 if (deleteAccountBtn) {
     deleteAccountBtn.addEventListener('click', async function() {
@@ -104,5 +97,4 @@ if (deleteAccountBtn) {
     });
 }
 
-// Initialize
 updateStats();

@@ -38,7 +38,6 @@ function updateDashboard() {
     let totalExpenses = 0;
 
     transactions.forEach(t => {
-        // Map 'category' to 'type' logic
         if (t.category === "Income") {
             totalIncome += parseFloat(t.amount) || 0;
         } else {
@@ -46,17 +45,16 @@ function updateDashboard() {
         }
     });
 
-    if(sumBalanceEl) animateValue("balance", totalIncome - totalExpenses);
-    if(sumIncomeEl) animateValue("totalIncome", totalIncome);
-    if(incomeAmountEl) animateValue("incomeAmount", totalIncome);
-    if(sumExpenseEl) animateValue("totalExpenses", totalExpenses);
-    if(expenseAmountEl) animateValue("expenseAmount", totalExpenses);
+    if (sumBalanceEl) animateValue("balance", totalIncome - totalExpenses);
+    if (sumIncomeEl) animateValue("totalIncome", totalIncome);
+    if (incomeAmountEl) animateValue("incomeAmount", totalIncome);
+    if (sumExpenseEl) animateValue("totalExpenses", totalExpenses);
+    if (expenseAmountEl) animateValue("expenseAmount", totalExpenses);
 
     const ratio = totalExpenses > 0 ? (totalIncome / totalExpenses).toFixed(2) : "∞";
-    if(pieRatioEl) pieRatioEl.textContent = `${ratio}:1`;
+    if (pieRatioEl) pieRatioEl.textContent = `${ratio}:1`;
 
-    if(pieCanvas) {
-        // Destroy existing chart if re-rendering (though we only call this once currently)
+    if (pieCanvas) {
         const existingChart = Chart.getChart(pieCanvas);
         if (existingChart) existingChart.destroy();
 
@@ -74,19 +72,18 @@ function updateDashboard() {
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: '65%',
-                animation: {duration: 1500}
+                animation: { duration: 1500 }
             }
         });
     }
-    
-    // Initial Bar Chart Render
+
     const range = chartRangeSelect ? parseInt(chartRangeSelect.value) : 6;
     updateBarChart(range);
 }
 
 function animateValue(id, end) {
     const el = document.getElementById(id);
-    if(!el) return;
+    if (!el) return;
     let start = 0, duration = 800;
     const step = (timestamp) => {
         if (!start) start = timestamp;
@@ -102,7 +99,7 @@ function animateValue(id, end) {
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function updateBarChart(monthCount = 6) {
-    if(!barCanvas) return;
+    if (!barCanvas) return;
 
     const monthlyIncome = new Array(12).fill(0);
     const monthlyExpenses = new Array(12).fill(0);
@@ -112,14 +109,11 @@ function updateBarChart(monthCount = 6) {
     transactions.forEach(t => {
         const date = new Date(t.date);
         const month = date.getMonth();
-        // Simple logic: check if within last X months broadly
-        // Note: This logic wraps around years simplistically. 
-        // Ideally we should check full date objects.
-        
+
         let monthDiff = (currentMonth - month + 12) % 12;
-        
+
         if (monthDiff < monthCount) {
-             if (t.category === 'Income') monthlyIncome[month] += parseFloat(t.amount) || 0;
+            if (t.category === 'Income') monthlyIncome[month] += parseFloat(t.amount) || 0;
             else monthlyExpenses[month] += parseFloat(t.amount) || 0;
         }
     });
@@ -127,7 +121,7 @@ function updateBarChart(monthCount = 6) {
     const displayMonths = [];
     const displayIncome = [];
     const displayExpenses = [];
-    
+
     for (let i = 0; i < monthCount; i++) {
         const idx = (currentMonth - i + 12) % 12;
         displayMonths.unshift(months[idx]);
@@ -137,7 +131,7 @@ function updateBarChart(monthCount = 6) {
 
     let maxValue = 0;
     let highestMonthIndex = -1;
-    
+
     for (let i = 0; i < monthCount; i++) {
         const total = displayIncome[i] + displayExpenses[i];
         if (total > maxValue) {
@@ -146,15 +140,15 @@ function updateBarChart(monthCount = 6) {
         }
     }
 
-    if(highestMonthEl) {
-        highestMonthEl.textContent = 
-            highestMonthIndex !== -1 && maxValue > 0 
-            ? `Highest: ${displayMonths[highestMonthIndex]} ($${maxValue.toFixed(2)})`
-            : 'Highest: No data';
+    if (highestMonthEl) {
+        highestMonthEl.textContent =
+            highestMonthIndex !== -1 && maxValue > 0
+                ? `Highest: ${displayMonths[highestMonthIndex]} ($${maxValue.toFixed(2)})`
+                : 'Highest: No data';
     }
 
     if (barChart) barChart.destroy();
-    
+
     barChart = new Chart(barCanvas, {
         type: 'bar',
         data: {
@@ -187,7 +181,7 @@ function updateBarChart(monthCount = 6) {
     });
 }
 
-if(chartRangeSelect) {
+if (chartRangeSelect) {
     chartRangeSelect.addEventListener('change', function() {
         updateBarChart(parseInt(this.value));
     });

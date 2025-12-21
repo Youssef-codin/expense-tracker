@@ -1,13 +1,13 @@
 import { THEME_KEY } from './constants.js';
 
 export function initTheme() {
-    if(localStorage.getItem(THEME_KEY) === 'dark') {
+    if (localStorage.getItem(THEME_KEY) === 'dark') {
         document.documentElement.classList.add('dark');
     }
 }
 
 export function setTheme(mode) {
-    if(mode === 'dark') {
+    if (mode === 'dark') {
         document.documentElement.classList.add('dark');
         localStorage.setItem(THEME_KEY, 'dark');
     } else {
@@ -16,5 +16,4 @@ export function setTheme(mode) {
     }
 }
 
-// Auto-initialize on import
 initTheme();

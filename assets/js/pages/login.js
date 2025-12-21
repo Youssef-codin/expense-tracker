@@ -3,7 +3,6 @@ import '../core/theme.js';
 import { AUTH_KEY } from '../core/constants.js';
 import { Api } from '../core/api.js';
 
-// Check auth immediately
 checkAuth();
 
 const loginForm = document.getElementById('loginForm');
@@ -15,12 +14,11 @@ if (loginForm) {
 
         try {
             const response = await Api.post('/user/login.php', { username, password });
-            
-            // Store the user object from backend (includes email now)
+
             if (response.data) {
                 localStorage.setItem(AUTH_KEY, JSON.stringify(response.data));
             }
-            
+
             alert('Login successful!');
             window.location.href = 'transactions.html';
         } catch (error) {

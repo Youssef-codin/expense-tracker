@@ -9,7 +9,7 @@ export function getCurrentUser() {
 export function checkAuth() {
     const user = getCurrentUser();
     const path = window.location.pathname;
-    
+
     // Simple check: if on login/register pages
     const isAuthPage = path.includes('login.html') || path.includes('registration.html');
 
@@ -17,7 +17,6 @@ export function checkAuth() {
         window.location.href = 'login.html';
     }
     else if (isAuthPage && user) {
-        // Default to dashboard or transactions
         window.location.href = 'dashboard.html';
     }
 
@@ -35,7 +34,7 @@ export async function logout() {
     } catch (e) {
         console.warn('Logout API call failed, but clearing local state anyway', e);
     }
-    
+
     localStorage.removeItem(AUTH_KEY);
     window.location.href = 'login.html';
 }
@@ -49,6 +48,5 @@ export function setupLogout() {
         });
     }
 
-    // Expose to window for legacy onclick support
     window.logout = logout;
 }
